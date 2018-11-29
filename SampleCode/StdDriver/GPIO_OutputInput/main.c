@@ -12,7 +12,7 @@
 
 
 #define PLL_CLOCK           50000000
-
+extern char GetChar(void);
 
 void SYS_Init(void)
 {
@@ -95,7 +95,7 @@ int main(void)
     printf("  >> Please connect P1.2 and P4.1 << \n");
     printf("  >> Please connect P5.1 and P6.2 << \n");
     printf("     Press any key to start test by using [Pin Data Input/Output Control] \n\n");
-    getchar();
+    GetChar();
 
     /* Configure P1.2 as Output mode and P4.1 as Input mode */
     GPIO_SetMode(P1, BIT2, GPIO_PMD_OUTPUT);

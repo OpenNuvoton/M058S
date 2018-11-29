@@ -154,6 +154,7 @@ int main()
     printf("|          M058S FMC Sample Code         |\n");
     printf("+----------------------------------------+\n");
 
+    SYS_UnlockReg();
 
     /* Enable FMC ISP function */
     FMC_Open();

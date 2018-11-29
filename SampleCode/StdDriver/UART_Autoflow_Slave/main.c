@@ -16,8 +16,11 @@
 
 #define PLL_CLOCK 50000000
 
-
+# if defined ( __GNUC__ )
+#define RXBUFSIZE 128
+#else
 #define RXBUFSIZE 1024
+#endif
 
 /*---------------------------------------------------------------------------------------------------------*/
 /* Global variables                                                                                        */
@@ -93,7 +96,7 @@ void UART0_Init()
 /* MAIN function                                                                                           */
 /*---------------------------------------------------------------------------------------------------------*/
 
-int main(void)
+int32_t main(void)
 {
 
     /* Unlock protected registers */

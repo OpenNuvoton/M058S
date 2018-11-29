@@ -21,7 +21,7 @@
 void SYS_Init(void);
 void UART0_Init(void);
 void AdcSingleCycleScanModeTest(void);
-
+extern char GetChar(void);
 
 void SYS_Init(void)
 {
@@ -132,7 +132,7 @@ void AdcSingleCycleScanModeTest()
         printf("  [1] Single end input (channel 0, 1, 2 and 3)\n");
         printf("  [2] Differential input (input channel pair 0 and 1)\n");
         printf("  Other keys: exit single cycle scan mode test\n");
-        u8Option = getchar();
+        u8Option = GetChar();
         if(u8Option == '1')
         {
             /* Set the ADC operation mode as single-cycle, input mode as single-end and enable the ADC converter  */

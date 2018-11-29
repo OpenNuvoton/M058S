@@ -20,7 +20,6 @@
 /*---------------------------------------------------------------------------------------------------------*/
 /* Define functions prototype                                                                              */
 /*---------------------------------------------------------------------------------------------------------*/
-extern char GetChar(void);
 int32_t main(void);
 void IrDA_FunctionTxTest(void);
 
@@ -93,7 +92,7 @@ void IrDA_FunctionTxTest()
     /* Wait Terminal input to send data to UART1 TX pin */
     do
     {
-        u8OutChar = GetChar();
+        u8OutChar = getchar();
         printf("   Input: %c , Send %c out\n", u8OutChar, u8OutChar);
         UART0->THR = u8OutChar;
     }
@@ -174,7 +173,7 @@ void UART0_Init()
 /* MAIN function                                                                                           */
 /*---------------------------------------------------------------------------------------------------------*/
 
-int main(void)
+int32_t main(void)
 {
 
     /* Unlock protected registers */

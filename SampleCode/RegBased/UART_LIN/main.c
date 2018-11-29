@@ -30,13 +30,14 @@ volatile int32_t g_i32pointer = 0;
 /*---------------------------------------------------------------------------------------------------------*/
 /* Define functions prototype                                                                              */
 /*---------------------------------------------------------------------------------------------------------*/
-extern char GetChar(void);
 int32_t main(void);
 void LIN_FunctionTest(void);
 void LIN_MasterTest(uint32_t u32id, uint32_t u32ModeSel);
 void LIN_SendHeader(uint32_t u32id);
 void LIN_SendResponse(int32_t checkSumOption, uint32_t *pu32TxBuf);
-
+# if defined (__GNUC__)
+extern void initialise_monitor_handles(void);
+#endif
 
 /*---------------------------------------------------------------------------------------------------------*/
 /*  LIN Test Menu                                                                                          */
@@ -282,9 +283,11 @@ void UART0_Init()
 /*---------------------------------------------------------------------------------------------------------*/
 /* MAIN function                                                                                           */
 /*---------------------------------------------------------------------------------------------------------*/
-int main(void)
+int32_t main(void)
 {
-
+#if (defined (__GNUC__) && (!(defined(__ARMCC_VERSION))))
+    initialise_monitor_handles();
+#endif
     /* Unlock protected registers */
     SYS_UnlockReg();
 
@@ -300,9 +303,9 @@ int main(void)
     /*---------------------------------------------------------------------------------------------------------*/
     /* SAMPLE CODE                                                                                             */
     /*---------------------------------------------------------------------------------------------------------*/
-
+#if !( __GNUC__ )
     printf("\n\nCPU @ %dHz\n", SystemCoreClock);
-
+#endif
     printf("\n\nUART Sample Program\n");
 
     /* UART sample LIN function */

@@ -19,6 +19,8 @@
 #define SIGNATURE       0x125ab234
 #define FLAG_ADDR       0x20000FFC
 
+extern char GetChar(void);
+
 /*---------------------------------------------------------------------------------------------------------*/
 /*  Brown Out Detector IRQ Handler                                                                         */
 /*---------------------------------------------------------------------------------------------------------*/
@@ -155,11 +157,11 @@ void SYS_PLL_Test(void)
 
         if(pi())
         {
-            printf("[FAIL]\n");
+        	printf("[FAIL]\n");
         }
         else
         {
-            printf("[OK]\n");
+        	printf("[OK]\n");
         }
 
         /* Disable CKO clock */
@@ -275,10 +277,10 @@ int32_t main(void)
 
     if(M32(FLAG_ADDR) == SIGNATURE)
     {
-        printf("  CPU Reset success!\n");
+    	printf("  CPU Reset success!\n");
         M32(FLAG_ADDR) = 0;
         printf("  Press any key to continue ...\n");
-        getchar();
+        GetChar();
     }
 
     /*---------------------------------------------------------------------------------------------------------*/
@@ -287,8 +289,8 @@ int32_t main(void)
 
     /* Read Part Device ID */
     printf("Product ID 0x%x\n", SYS->PDID);
-
     /* Get reset source from last operation */
+
     u32data = SYS->RSTSRC;
     printf("Reset Source 0x%x\n", u32data);
 
@@ -303,7 +305,7 @@ int32_t main(void)
     /* Check if the write-protected registers are unlocked before BOD setting and CPU Reset */
     if(SYS->REGWRPROT != 0)
     {
-        printf("Protected Address is Unlocked\n");
+    	printf("Protected Address is Unlocked\n");
     }
 
     /* Enable Brown-out Detector and Low Voltage Reset function, and set Brown-out Detector voltage 2.7V */
