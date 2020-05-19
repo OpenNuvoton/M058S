@@ -6,6 +6,8 @@
  * @brief    M058S Series Peripheral Access Layer Header File
  *
  * @note
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved.
  *
  ******************************************************************************/

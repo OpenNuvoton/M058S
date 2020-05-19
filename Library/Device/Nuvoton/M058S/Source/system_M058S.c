@@ -6,6 +6,8 @@
  * @brief    M058S Series System Setting Source File
  *
  * @note
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Copyright (C) 2011 Nuvoton Technology Corp. All rights reserved.
  *
  ******************************************************************************/
