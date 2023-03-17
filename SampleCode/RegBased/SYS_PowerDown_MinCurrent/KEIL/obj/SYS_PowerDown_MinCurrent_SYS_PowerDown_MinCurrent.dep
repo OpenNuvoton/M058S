@@ -1,0 +1,63 @@
+Dependencies for Project 'SYS_PowerDown_MinCurrent', Target 'SYS_PowerDown_MinCurrent': (DO NOT MODIFY !)
+CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARMCC
+F (..\..\..\..\Library\Device\Nuvoton\M058S\Source\system_M058S.c)(0x63E0D243)(-c --cpu Cortex-M0 -D__MICROLIB -g -O2 --apcs=interwork --split_sections -I ..\..\..\..\Library\Device\Nuvoton\M058S\Include -I ..\..\..\..\Library\CMSIS\Include -I ..\..\..\..\Library\StdDriver\inc-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="537"-o .\obj\system_m058s.o --omf_browse .\obj\system_m058s.crf --depend .\obj\system_m058s.d)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\..\..\..\Library\Device\Nuvoton\M058S\Include\M058S.h)(0x63E0D243)
+I (..\..\..\..\Library\CMSIS\Include\core_cm0.h)(0x63E0D243)
+I (..\..\..\..\Library\CMSIS\Include\core_cmInstr.h)(0x63E0D243)
+I (..\..\..\..\Library\CMSIS\Include\core_cmFunc.h)(0x63E0D243)
+I (..\..\..\..\Library\Device\Nuvoton\M058S\Include\system_M058S.h)(0x63E0D243)
+I (..\..\..\..\Library\StdDriver\inc\sys.h)(0x63E0D244)
+I (..\..\..\..\Library\StdDriver\inc\clk.h)(0x63E0D243)
+I (..\..\..\..\Library\StdDriver\inc\fmc.h)(0x63E0D243)
+I (..\..\..\..\Library\StdDriver\inc\gpio.h)(0x63E0D243)
+I (..\..\..\..\Library\StdDriver\inc\pwm.h)(0x63E0D243)
+I (..\..\..\..\Library\StdDriver\inc\spi.h)(0x63E0D244)
+I (..\..\..\..\Library\StdDriver\inc\timer.h)(0x63E0D244)
+I (..\..\..\..\Library\StdDriver\inc\wdt.h)(0x63E0D244)
+I (..\..\..\..\Library\StdDriver\inc\wwdt.h)(0x63E0D244)
+I (..\..\..\..\Library\StdDriver\inc\uart.h)(0x63E0D244)
+I (..\..\..\..\Library\StdDriver\inc\i2c.h)(0x63E0D243)
+I (..\..\..\..\Library\StdDriver\inc\adc.h)(0x63E0D243)
+F (..\..\..\..\Library\Device\Nuvoton\M058S\Source\ARM\startup_M058S.s)(0x63E0D243)(--cpu Cortex-M0 -g --16 --apcs=interwork --pd "__MICROLIB SETA 1"-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 537"--list .\lst\startup_m058s.lst --xref -o .\obj\startup_m058s.o --depend .\obj\startup_m058s.d)
+F (..\main.c)(0x63EC8E43)(-c --cpu Cortex-M0 -D__MICROLIB -g -O2 --apcs=interwork --split_sections -I ..\..\..\..\Library\Device\Nuvoton\M058S\Include -I ..\..\..\..\Library\CMSIS\Include -I ..\..\..\..\Library\StdDriver\inc-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="537"-o .\obj\main.o --omf_browse .\obj\main.crf --depend .\obj\main.d)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (..\..\..\..\Library\Device\Nuvoton\M058S\Include\M058S.h)(0x63E0D243)
+I (..\..\..\..\Library\CMSIS\Include\core_cm0.h)(0x63E0D243)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\..\..\..\Library\CMSIS\Include\core_cmInstr.h)(0x63E0D243)
+I (..\..\..\..\Library\CMSIS\Include\core_cmFunc.h)(0x63E0D243)
+I (..\..\..\..\Library\Device\Nuvoton\M058S\Include\system_M058S.h)(0x63E0D243)
+I (..\..\..\..\Library\StdDriver\inc\sys.h)(0x63E0D244)
+I (..\..\..\..\Library\StdDriver\inc\clk.h)(0x63E0D243)
+I (..\..\..\..\Library\StdDriver\inc\fmc.h)(0x63E0D243)
+I (..\..\..\..\Library\StdDriver\inc\gpio.h)(0x63E0D243)
+I (..\..\..\..\Library\StdDriver\inc\pwm.h)(0x63E0D243)
+I (..\..\..\..\Library\StdDriver\inc\spi.h)(0x63E0D244)
+I (..\..\..\..\Library\StdDriver\inc\timer.h)(0x63E0D244)
+I (..\..\..\..\Library\StdDriver\inc\wdt.h)(0x63E0D244)
+I (..\..\..\..\Library\StdDriver\inc\wwdt.h)(0x63E0D244)
+I (..\..\..\..\Library\StdDriver\inc\uart.h)(0x63E0D244)
+I (..\..\..\..\Library\StdDriver\inc\i2c.h)(0x63E0D243)
+I (..\..\..\..\Library\StdDriver\inc\adc.h)(0x63E0D243)
+F (..\..\..\..\Library\StdDriver\src\retarget.c)(0x63E0D61F)(-c --cpu Cortex-M0 -D__MICROLIB -g -O2 --apcs=interwork --split_sections -I ..\..\..\..\Library\Device\Nuvoton\M058S\Include -I ..\..\..\..\Library\CMSIS\Include -I ..\..\..\..\Library\StdDriver\inc-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="537"-o .\obj\retarget.o --omf_browse .\obj\retarget.crf --depend .\obj\retarget.d)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (..\..\..\..\Library\Device\Nuvoton\M058S\Include\M058S.h)(0x63E0D243)
+I (..\..\..\..\Library\CMSIS\Include\core_cm0.h)(0x63E0D243)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\..\..\..\Library\CMSIS\Include\core_cmInstr.h)(0x63E0D243)
+I (..\..\..\..\Library\CMSIS\Include\core_cmFunc.h)(0x63E0D243)
+I (..\..\..\..\Library\Device\Nuvoton\M058S\Include\system_M058S.h)(0x63E0D243)
+I (..\..\..\..\Library\StdDriver\inc\sys.h)(0x63E0D244)
+I (..\..\..\..\Library\StdDriver\inc\clk.h)(0x63E0D243)
+I (..\..\..\..\Library\StdDriver\inc\fmc.h)(0x63E0D243)
+I (..\..\..\..\Library\StdDriver\inc\gpio.h)(0x63E0D243)
+I (..\..\..\..\Library\StdDriver\inc\pwm.h)(0x63E0D243)
+I (..\..\..\..\Library\StdDriver\inc\spi.h)(0x63E0D244)
+I (..\..\..\..\Library\StdDriver\inc\timer.h)(0x63E0D244)
+I (..\..\..\..\Library\StdDriver\inc\wdt.h)(0x63E0D244)
+I (..\..\..\..\Library\StdDriver\inc\wwdt.h)(0x63E0D244)
+I (..\..\..\..\Library\StdDriver\inc\uart.h)(0x63E0D244)
+I (..\..\..\..\Library\StdDriver\inc\i2c.h)(0x63E0D243)
+I (..\..\..\..\Library\StdDriver\inc\adc.h)(0x63E0D243)
