@@ -96,7 +96,7 @@ void SYS_Init(void)
     //SystemCoreClockUpdate();
     PllClock        = PLL_CLOCK;            // PLL
     SystemCoreClock = PLL_CLOCK / 1;        // HCLK
-    CyclesPerUs     = PLL_CLOCK / 1000000;  // For SYS_SysTickDelay()
+    CyclesPerUs     = PLL_CLOCK / 1000000;  // For CLK_SysTickDelay()
 
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
@@ -137,7 +137,7 @@ int32_t IAP_Func0(int32_t n)
     }
 
     return n;
-#endif    
+#endif
 }
 
 int32_t IAP_Func1(int32_t n)
@@ -153,7 +153,7 @@ int32_t IAP_Func1(int32_t n)
     }
 
     return n;
-#endif    
+#endif
 }
 int32_t IAP_Func2(int32_t n)
 {
@@ -168,7 +168,7 @@ int32_t IAP_Func2(int32_t n)
     }
 
     return n;
-#endif    
+#endif
 }
 int32_t IAP_Func3(int32_t n)
 {
@@ -183,7 +183,7 @@ int32_t IAP_Func3(int32_t n)
     }
 
     return n;
-#endif    
+#endif
 }
 
 /*---------------------------------------------------------------------------------------------------------*/

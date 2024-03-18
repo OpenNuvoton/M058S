@@ -26,11 +26,23 @@ void IrDA_FunctionRxTest(void);
 
 
 /*---------------------------------------------------------------------------------------------------------*/
-/*  IrDA Function Receive Test                                                                            */
+/*  IrDA Function Receive Test                                                                             */
 /*---------------------------------------------------------------------------------------------------------*/
 void IrDA_FunctionRxTest()
 {
     uint8_t u8InChar = 0xFF;
+
+    printf("\n");
+    printf("+-------------------------------------------------------------+\n");
+    printf("|     Pin Configure                                           |\n");
+    printf("+-------------------------------------------------------------+\n");
+    printf("|      ______                                    _______      |\n");
+    printf("|     |      |                                  |       |     |\n");
+    printf("|     |Master|--- TXD(P3.1)        RXD(P3.0) ---|Slave  |     |\n");
+    printf("|     |      |                                  |       |     |\n");
+    printf("|     |______|                                  |_______|     |\n");
+    printf("|                                                             |\n");
+    printf("+-------------------------------------------------------------+\n");
 
     printf("\n");
     printf("+-------------------------------------------------------------+\n");
@@ -108,8 +120,8 @@ void SYS_Init(void)
     CLK->CLKDIV = (CLK->CLKDIV & (~CLK_CLKDIV_HCLK_N_Msk)) | CLK_CLKDIV_HCLK(1);
 
     /* Set PLL to power down mode and PLL_STB bit in CLKSTATUS register will be cleared by hardware. */
-    CLK->PLLCON |= CLK_PLLCON_PD_Msk;     
-    
+    CLK->PLLCON |= CLK_PLLCON_PD_Msk;
+
     /* Enable external XTAL 12MHz clock */
     CLK->PWRCON |= CLK_PWRCON_XTL12M_EN_Msk;
 
@@ -126,7 +138,7 @@ void SYS_Init(void)
     //SystemCoreClockUpdate();
     PllClock        = PLL_CLOCK;            // PLL
     SystemCoreClock = PLL_CLOCK / 1;        // HCLK
-    CyclesPerUs     = PLL_CLOCK / 1000000;  // For SYS_SysTickDelay()
+    CyclesPerUs     = PLL_CLOCK / 1000000;  // For CLK_SysTickDelay()
 
     /* Enable UART module clock */
     CLK->APBCLK |= CLK_APBCLK_UART0_EN_Msk;

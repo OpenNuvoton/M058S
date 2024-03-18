@@ -180,7 +180,7 @@ void SYS_Init(void)
 
     /* Set PLL to power down mode and PLL_STB bit in CLKSTATUS register will be cleared by hardware */
     CLK->PLLCON |= CLK_PLLCON_PD_Msk;
-    
+
     /* Enable external XTAL 12MHz clock */
     CLK->PWRCON |= CLK_PWRCON_XTL12M_EN_Msk;
 
@@ -273,7 +273,7 @@ int32_t main(void)
     SYS->P3_MFP = SYS_MFP_P31_TXD;
     SYS->P4_MFP = 0;
 
-    /* Configure all GPIO as Quasi-bidirectional Mode. They are default ouput high. */
+    /* Configure all GPIO as Quasi-bidirectional Mode. They are default output high. */
     P0->PMD = 0xFFFF;
     P1->PMD = 0xFFFF;
     P2->PMD = 0xFFFF;

@@ -180,7 +180,7 @@ extern "C"
   * @param[in] adc The pointer of the specified ADC module.
   * @param[in] u32ChNum ADC Channel, valid value are from 0 to 7.
   * @retval 0 ADC data is not overrun.
-  * @retval 1 ADC data us overrun.
+  * @retval 1 ADC data is overrun.
   * @details ADSR[23:16] (OVERRUN) is the mirror of ADDR0~7[16] OVERRUN bits.
   */
 #define ADC_IS_DATA_OVERRUN(adc, u32ChNum) (((adc)->ADSR & (1<<(ADC_ADSR_OVERRUN_Pos+(u32ChNum)))) ? 1 : 0)

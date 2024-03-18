@@ -144,6 +144,7 @@ void UART_TEST_HANDLE()
     uint8_t u8InChar = 0xFF;
     uint32_t u32IntSts = UART0->ISR;
 
+    /* Receive Data Available Interrupt Handle */
     if(u32IntSts & UART_ISR_RDA_INT_Msk)
     {
         printf("\nInput:");
@@ -173,6 +174,7 @@ void UART_TEST_HANDLE()
         printf("\nTransmission Test:");
     }
 
+    /* Transmit Holding Register Empty Interrupt Handle */
     if(u32IntSts & UART_ISR_THRE_INT_Msk)
     {
         uint16_t tmp;
@@ -180,7 +182,7 @@ void UART_TEST_HANDLE()
         if(g_u32comRhead != tmp)
         {
             u8InChar = g_u8RecData[g_u32comRhead];
-            while(UART_IS_TX_FULL(UART0));  /* Wait Tx is not full to transmit data */                        
+            while(UART_IS_TX_FULL(UART0));  /* Wait Tx is not full to transmit data */
             UART_WRITE(UART0, u8InChar);
             g_u32comRhead = (g_u32comRhead == (RXBUFSIZE - 1)) ? 0 : (g_u32comRhead + 1);
             g_u32comRbytes--;
@@ -205,7 +207,7 @@ void UART_FunctionTest()
     /*
         Using a RS232 cable to connect UART0 and PC.
         UART0 is set to debug port. UART0 is enable RDA and RLS interrupt.
-        When inputing char to terminal screen, RDA interrupt will happen and
+        When inputting char to terminal screen, RDA interrupt will happen and
         UART0 will print the received char on screen.
     */
 

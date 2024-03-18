@@ -3,7 +3,7 @@
  * @version  V3.00
  * $Revision: 1 $
  * $Date: 15/03/10 5:13p $
- * @brief    Show how to wake up system form Power-down mode by UART interrupt.
+ * @brief    Show how to wake up system from Power-down mode by UART interrupt.
  * @note
  * Copyright (C) 2011 Nuvoton Technology Corp. All rights reserved.
  *
@@ -39,8 +39,12 @@ void UART0_IRQHandler(void)
 /*---------------------------------------------------------------------------------------------------------*/
 void PowerDownFunction(void)
 {
+    uint32_t u32TimeOutCnt;
+
     /* Check if all the debug messages are finished */
-    UART_WAIT_TX_EMPTY(UART0);
+    u32TimeOutCnt = SystemCoreClock; /* 1 second time-out */
+    UART_WAIT_TX_EMPTY(UART0)
+        if(--u32TimeOutCnt == 0) break;
 
     /* Enter to Power-down mode */
     CLK_PowerDown();
@@ -55,8 +59,8 @@ void UART_CTSWakeUpTest(void)
 
     printf("+----------------------------------------------------------+\n");
     printf("|   Power-Down and Wake-up by UART interrupt Sample Code   |\n");
-    printf("+----------------------------------------------------------+\n\n");    
-    
+    printf("+----------------------------------------------------------+\n\n");
+
     /* Clear Modem Status interrupt before entering Power-down mode */
     UART_ClearIntFlag(UART0, UART_ISR_MODEM_INT_Msk);
 
@@ -70,16 +74,16 @@ void UART_CTSWakeUpTest(void)
     SYS_UnlockReg();
 
     /* Enter to Power-down mode */
-    PowerDownFunction(); 
+    PowerDownFunction();
 
     /* Lock protected registers after entering Power-down mode */
     SYS_LockReg();
 
     /* Disable UART Wake-up function and Modem Status interrupt */
     UART_DisableInt(UART0, UART_IER_WAKE_EN_Msk|UART_IER_MODEM_IEN_Msk);
-       
-    printf("\nSystem waken-up done.\n");       
-    printf("\nUART Sample Program End.\n");    
+
+    printf("\nSystem waken-up done.\n");
+    printf("\nUART Sample Program End.\n");
 
 }
 
@@ -108,10 +112,10 @@ void SYS_Init(void)
     CLK_SetCoreClock(PLL_CLOCK);
 
     /* Enable UART module clock */
-    CLK_EnableModuleClock(UART0_MODULE); 
+    CLK_EnableModuleClock(UART0_MODULE);
 
     /* Select UART module clock source */
-    CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UART_S_HXT, CLK_CLKDIV_UART(1));   
+    CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UART_S_HXT, CLK_CLKDIV_UART(1));
 
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */

@@ -20,7 +20,7 @@ extern uint32_t Image$$RO$$Base;
 #endif
 
 typedef void (FUNC_PTR)(void);
-
+int32_t g_FMC_i32ErrCode;
 
 void SYS_Init(void)
 {
@@ -57,7 +57,7 @@ void SYS_Init(void)
     //SystemCoreClockUpdate();
     PllClock        = PLL_CLOCK;            // PLL
     SystemCoreClock = PLL_CLOCK / 1;        // HCLK
-    CyclesPerUs     = PLL_CLOCK / 1000000;  // For SYS_SysTickDelay()
+    CyclesPerUs     = PLL_CLOCK / 1000000;  // For CLK_SysTickDelay()
 
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
@@ -209,7 +209,7 @@ int32_t main(void)
             u32BootAddr = 0x0000;
             break;
     }
-     
+
     /* Disable all interrupts before change VECMAP */
     NVIC->ICER[0] = 0xFFFFFFFF;
 
@@ -218,7 +218,7 @@ int32_t main(void)
     if(FMC_GetVECMAP() != u32BootAddr)
     {
         printf("\nERROR: VECMAP isn't supported in current chip.\n");
-        while(1);
+        goto lexit;
     }
 
     /* Reset All IP before boot to new AP */
@@ -235,8 +235,8 @@ int32_t main(void)
 #else
     /* Set Main Stack Pointer register of new boot */
     __set_MSP(M32(0));
-#endif    
-    
+#endif
+
     /* Call reset handler of new boot */
     ResetFunc();
 

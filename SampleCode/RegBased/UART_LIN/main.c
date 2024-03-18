@@ -170,7 +170,7 @@ uint32_t GetCheckSumValue(uint8_t *pu8Buf, uint32_t u32ModeSel)
 /*---------------------------------------------------------------------------------------------------------*/
 void LIN_SendHeader(uint32_t u32id)
 {
-    uint32_t u32Count;
+    uint32_t u32Count, u32TimeOutCnt;
 
     g_i32pointer = 0;
 
@@ -186,7 +186,15 @@ void LIN_SendHeader(uint32_t u32id)
 
     for(u32Count = 0; u32Count < 2; u32Count++)
     {
-        while(!(UART0->FSR & UART_FSR_TE_FLAG_Msk));   /* Wait Tx empty */
+        u32TimeOutCnt = SystemCoreClock; /* 1 second time-out */
+        while(!(UART0->FSR & UART_FSR_TE_FLAG_Msk))    /* Wait Tx empty */
+        {
+            if(--u32TimeOutCnt == 0)
+            {
+                printf("Wait for UART Tx empty time-out!\n");
+                return;
+            }
+        }
 
         UART0->THR = g_u8SendData[u32Count]; /* Send UART Data from buffer */
     }
@@ -199,6 +207,7 @@ void LIN_SendHeader(uint32_t u32id)
 void LIN_SendResponse(int32_t checkSumOption, uint32_t *pu32TxBuf)
 {
     int32_t i32;
+    uint32_t u32TimeOutCnt;
 
     for(i32 = 0; i32 < 8; i32++)
         g_u8SendData[g_i32pointer++] = pu32TxBuf[i32] ;
@@ -207,7 +216,15 @@ void LIN_SendResponse(int32_t checkSumOption, uint32_t *pu32TxBuf)
 
     for(i32 = 0; i32 < 9; i32++)
     {
-        while(!(UART0->FSR & UART_FSR_TE_FLAG_Msk));   /* Wait Tx empty */
+        u32TimeOutCnt = SystemCoreClock; /* 1 second time-out */
+        while(!(UART0->FSR & UART_FSR_TE_FLAG_Msk))    /* Wait Tx empty */
+        {
+            if(--u32TimeOutCnt == 0)
+            {
+                printf("Wait for UART Tx empty time-out!\n");
+                return;
+            }
+        }
 
         UART0->THR = g_u8SendData[i32 + 2]; /* Send UART Data from buffer */
     }
@@ -230,8 +247,8 @@ void SYS_Init(void)
     CLK->CLKDIV = (CLK->CLKDIV & (~CLK_CLKDIV_HCLK_N_Msk)) | CLK_CLKDIV_HCLK(1);
 
     /* Set PLL to power down mode and PLL_STB bit in CLKSTATUS register will be cleared by hardware. */
-    CLK->PLLCON |= CLK_PLLCON_PD_Msk;        
-    
+    CLK->PLLCON |= CLK_PLLCON_PD_Msk;
+
     /* Enable external XTAL 12MHz clock */
     CLK->PWRCON |= CLK_PWRCON_XTL12M_EN_Msk;
 
@@ -266,7 +283,7 @@ void SYS_Init(void)
 
 }
 
-void UART0_Init()
+void UART0_Init(void)
 {
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init UART                                                                                               */

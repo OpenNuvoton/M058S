@@ -75,7 +75,7 @@ void RS485_HANDLE()
 #endif
         }
     }
-    else if((u32IntSts & UART_ISR_RDA_INT_Msk) || (u32IntSts & UART_ISR_TOUT_INT_Msk))  /* Rx Ready or Time-out INT*/
+    else if((u32IntSts & UART_ISR_RDA_INT_Msk) || (u32IntSts & UART_ISR_TOUT_INT_Msk))  /* Rx Ready or Time-out INT */
     {
         /* Handle received data */
         g_u8RecData[r_pointer++] = UART0->RBR;
@@ -93,7 +93,7 @@ void RS485_HANDLE()
 /*---------------------------------------------------------------------------------------------------------*/
 void RS485_9bitModeSlave()
 {
-    uint32_t i;
+    uint32_t i, u32Err = 0;
 
     printf("\n");
     printf("+-------------------------------------------------------------+\n");
@@ -101,8 +101,8 @@ void RS485_9bitModeSlave()
     printf("+-------------------------------------------------------------+\n");
     printf("|     _______                                    _______      |\n");
     printf("|    |       |                                  |       |     |\n");
-    printf("|    |Master |--- TXD(P3.1) <====> RXD(P3.0) ---| Slave |     |\n");
-    printf("|    |       |--- RTS(P0.3) <====> RTS(P0.3) ---|       |     |\n");
+    printf("|    |Master |--- TXD(P3.1)        RXD(P3.0) ---| Slave |     |\n");
+    printf("|    |       |--- RTS(P0.3)        RTS(P0.3) ---|       |     |\n");
     printf("|    |_______|                                  |_______|     |\n");
     printf("|                                                             |\n");
     printf("+-------------------------------------------------------------+\n");
@@ -116,8 +116,9 @@ void RS485_9bitModeSlave()
     printf("+-------------------------------------------------------------+\n");
 
     /*
-        The sample code is used to test RS485 9-bit mode and needs
-        two Module test board to complete the test.
+        The sample code is used to test RS485 9-bit mode.
+        It needs two Module test board and enables semihosted to complete the test.
+
         Master:
             1.Set AUD mode and HW will control RTS pin. LEV_RTS is set to '0'.
             2.Master will send four different address with 10 bytes data to test Slave.
@@ -131,22 +132,32 @@ void RS485_9bitModeSlave()
             2.The received byte, parity bit is '1' , is considered "ADDRESS".
             3.The received byte, parity bit is '0' , is considered "DATA".  (Default)
             4.AAD: The slave will ignore any data until ADDRESS match ADDR_MATCH value.
-              When RLS and RDA interrupt is happened,it means the ADDRESS is received.
-              Check if RS485_ADD_DETF is set and read UA_RBR to clear ADDRESS stored in rx_fifo.
+              When RLS and RDA interrupt is happened, it means the ADDRESS is received.
+              Check if RS485_ADD_DETF is set and read UA_RBR to clear ADDRESS stored in RX FIFO.
 
               NMM: The slave will ignore data byte until disable RX_DIS.
-              When RLS and RDA interrupt is happened,it means the ADDRESS is received.
+              When RLS and RDA interrupt is happened, it means the ADDRESS is received.
               Check the ADDRESS is match or not by user in UART_IRQHandler.
-              If the ADDRESS is match,clear RX_DIS bit to receive data byte.
-              If the ADDRESS is not match,set RX_DIS bit to avoid data byte stored in FIFO.
+              If the ADDRESS is match, clear RX_DIS bit to receive data byte.
+              If the ADDRESS is not match, set RX_DIS bit to avoid data byte stored in FIFO.
+
+        Note: User can measure transmitted data waveform on TXD and RXD pin.
+              RTS pin is used for RS485 transceiver to control transmission direction.
+              RTS pin is low in idle state. When master is sending data, RTS pin will be pull high.
+              The connection to RS485 transceiver is as following figure for reference.
+               __________     ___________      ___________      __________
+              |          |   |           |    |           |    |          |
+              |Master    |   |RS485      |    |RS485      |    |Slave     |
+              | UART_TXD |---|Transceiver|<==>|Transceiver|----| UART_RXD |
+              | UART_nRTS|---|           |    |           |----| UART_nRTS|
+              |__________|   |___________|    |___________|    |__________|
     */
 
-    /* Set Data Format, Only need parity enable whenever parity ODD/EVEN */
+    /* Set Data Format, only need parity enable whenever parity ODD/EVEN */
     UART_SetLine_Config(UART0, 0, UART_WORD_LEN_8, UART_PARITY_EVEN, UART_STOP_BIT_1);
 
     /* Set RTS pin active level as high level active */
-    UART0->MCR &= ~UART_MCR_LEV_RTS_Msk;
-    UART0->MCR |= UART_RTS_IS_HIGH_LEV_ACTIVE;
+    UART0->MCR = (UART0->MCR & (~UART_MCR_LEV_RTS_Msk)) | UART_RTS_IS_HIGH_LEV_ACTIVE;
 
 #if(IS_USE_RS485NMM == 1)
 
@@ -198,11 +209,15 @@ void RS485_9bitModeSlave()
     {
         if(g_u8RecData[i] != (i & 0xFF))
         {
-            printf("Compare Data Failed\n");
-            while(1);
+            u32Err = 1;
+            break;
         }
     }
-    printf("\n Receive OK & Check OK\n");
+
+    if( u32Err )
+        printf("Compare Data Failed\n");
+    else
+        printf("\n Receive OK & Check OK\n");
 
     /* Flush Rx FIFO */
     UART0->FCR |= UART_FCR_RFR_Msk;

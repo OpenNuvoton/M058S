@@ -177,7 +177,7 @@ uint32_t GetAVDDVoltage(void)
 /*---------------------------------------------------------------------------------------------------------*/
 uint32_t GetAVDDCodeByADC(void)
 {
-    uint32_t u32Count, u32Sum, u32Data;
+    uint32_t u32Count, u32Sum, u32Data, u32TimeOutCnt;
 
     /* Configure ADC: single-end input, single scan mode, enable ADC analog circuit. */
     ADC->ADCR = (ADC_ADCR_ADMD_SINGLE | ADC_ADCR_DIFFEN_SINGLE_END | ADC_ADCR_ADEN_CONVERTER_ENABLE);
@@ -188,11 +188,11 @@ uint32_t GetAVDDCodeByADC(void)
     ADC->ADCR |= ADC_ADCR_ADEN_Msk;
 
     /* Clear conversion finish flag */
-            ADC->ADSR = ADC_ADSR_ADF_Msk;
+    ADC->ADSR = ADC_ADSR_ADF_Msk;
 
     /* Enable ADC conversion finish interrupt */
-            ADC->ADCR |= ADC_ADCR_ADIE_Msk;
-            NVIC_EnableIRQ(ADC_IRQn);
+    ADC->ADCR |= ADC_ADCR_ADIE_Msk;
+    NVIC_EnableIRQ(ADC_IRQn);
 
     g_u8ADF = 0;
     u32Sum = 0;
@@ -207,8 +207,17 @@ uint32_t GetAVDDCodeByADC(void)
         ADC->ADCR |= ADC_ADCR_ADST_Msk;
 
         u32Data = 0;
+
         /* Wait conversion done */
-        while(g_u8ADF == 0);
+        u32TimeOutCnt = SystemCoreClock; /* 1 second time-out */
+        while(g_u8ADF == 0)
+        {
+            if(--u32TimeOutCnt == 0)
+            {
+                printf("Wait for ADC conversion done time-out!\n");
+                return 0;
+            }
+        }
         g_u8ADF = 0;
         /* Get the conversion result */
         u32Data = (ADC->ADDR[(7)] & ADC_ADDR_RSLT_Msk) >> ADC_ADDR_RSLT_Pos;
@@ -216,7 +225,7 @@ uint32_t GetAVDDCodeByADC(void)
         u32Sum += u32Data;
     }
     /* Disable ADC interrupt */
-            ADC->ADCR &= ~ADC_ADCR_ADIE_Msk;
+    ADC->ADCR &= ~ADC_ADCR_ADIE_Msk;
     /* Disable ADC */
     ADC->ADCR &= ~ADC_ADCR_ADEN_Msk;
 

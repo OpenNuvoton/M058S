@@ -43,11 +43,11 @@ void SYS_Init(void)
     CLK->CLKSEL1 = CLK_CLKSEL1_UART_S_HXT;
 
     /* Update System Core Clock */
-    /* User can use SystemCoreClockUpdate() to calculate PllClock, SystemCoreClock and CycylesPerUs automatically. */
+    /* User can use SystemCoreClockUpdate() to calculate PllClock, SystemCoreClock and CyclesPerUs automatically. */
     //SystemCoreClockUpdate();
     PllClock        = PLL_CLOCK;            // PLL
     SystemCoreClock = PLL_CLOCK / 1;        // HCLK
-    CyclesPerUs     = PLL_CLOCK / 1000000;  // For SYS_SysTickDelay()
+    CyclesPerUs     = PLL_CLOCK / 1000000;  // For CLK_SysTickDelay()
 
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
@@ -214,7 +214,9 @@ int main()
 
             case '1':
                 printf("\n\nChange VECMAP and branch to LDROM...\n");
-                UART_WAIT_TX_EMPTY(UART0); /* To make sure all message has been print out */
+            u32TimeOutCnt = SystemCoreClock; /* 1 second time-out */
+                UART_WAIT_TX_EMPTY(UART0)  /* To make sure all message has been print out */
+                    if(--u32TimeOutCnt == 0) break;
 
                 /* Set Boot selection bit for rebooting to LDROM */
                 FMC->ISPCON |= FMC_ISPCON_BS_Msk;

@@ -19,8 +19,12 @@
 /*---------------------------------------------------------------------------------------------------------*/
 void PowerDownFunction(void)
 {
+    uint32_t u32TimeOutCnt;
+
     /* Check if all the debug messages are finished */
-    UART_WAIT_TX_EMPTY(UART0);
+    u32TimeOutCnt = SystemCoreClock; /* 1 second time-out */
+    UART_WAIT_TX_EMPTY(UART0)
+        if(--u32TimeOutCnt == 0) break;
 
     /* Enter to Power-down mode */
     CLK_PowerDown();
@@ -132,7 +136,7 @@ void UART0_Init(void)
 /*---------------------------------------------------------------------------------------------------------*/
 /* MAIN function                                                                                           */
 /*---------------------------------------------------------------------------------------------------------*/
-int main(void)
+int32_t main(void)
 {
     /* Unlock protected registers */
     SYS_UnlockReg();
@@ -169,7 +173,7 @@ int main(void)
     /* Unlock protected registers before entering Power-down mode */
     SYS_UnlockReg();
 
-    /* Waiting for P1.3 risig-edge or P6.2 falling-edge interrupt event */
+    /* Waiting for P1.3 rising-edge or P6.2 falling-edge interrupt event */
     while(1)
     {
         printf("Enter to Power-Down ......\n");

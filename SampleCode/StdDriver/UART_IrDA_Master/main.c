@@ -37,7 +37,7 @@ void IrDA_FunctionTxTest()
     printf("+-------------------------------------------------------------+\n");
     printf("|      ______                                    _______      |\n");
     printf("|     |      |                                  |       |     |\n");
-    printf("|     |Master|--- TXD(P3.1) <====> RXD(P3.0) ---|Slave  |     |\n");
+    printf("|     |Master|--- TXD(P3.1)        RXD(P3.0) ---|Slave  |     |\n");
     printf("|     |      |                                  |       |     |\n");
     printf("|     |______|                                  |_______|     |\n");
     printf("|                                                             |\n");

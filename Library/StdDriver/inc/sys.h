@@ -319,10 +319,10 @@ Example: If user want to set P0.2 as TXD and P0.3 as RXD in initial function,
 /**
   * @brief      Get Brown-out detector status
   * @param      None
-  * @retval     0   System voltage is higher than BOD_VL setting or BOD_EN is 0.
-  * @retval     >=1 System voltage is lower than BOD_VL setting.
+  * @retval     0   System voltage is higher than BOD threshold voltage setting or BOD function is disabled.
+  * @retval     >=1 System voltage is lower than BOD threshold voltage setting.
   * @details    This macro get Brown-out detector output status.
-  *             If the BOD_EN is 0, this function always return 0.
+  *             If the BOD function is disabled, this function always return 0.
   */
 #define SYS_GET_BOD_OUTPUT()            (SYS->BODCR & SYS_BODCR_BOD_OUT_Msk)
 
@@ -501,11 +501,14 @@ __STATIC_INLINE void SYS_LockReg(void)
   */
 __STATIC_INLINE void SYS_UnlockReg(void)
 {
+    uint32_t u32TimeOutCnt = __HIRC;
+
     while(SYS->REGWRPROT != SYS_REGWRPROT_REGPROTDIS_Msk)
     {
         SYS->REGWRPROT = 0x59;
         SYS->REGWRPROT = 0x16;
         SYS->REGWRPROT = 0x88;
+        if(--u32TimeOutCnt == 0) break;
     }
 }
 

@@ -46,11 +46,11 @@ extern "C"
 #define CLK_CLKSEL0_HCLK_S_HXT          0x00UL /*!< Setting HCLK clock source as HXT */
 #define CLK_CLKSEL0_HCLK_S_PLL          0x02UL /*!< Setting HCLK clock source as PLL */
 #define CLK_CLKSEL0_HCLK_S_LIRC         0x03UL /*!< Setting HCLK clock source as LIRC */
-#define CLK_CLKSEL0_HCLK_S_HIRC         0x07UL /*!< Setting HCLKclock source as HIRC */
+#define CLK_CLKSEL0_HCLK_S_HIRC         0x07UL /*!< Setting HCLK clock source as HIRC */
 #define CLK_CLKSEL0_STCLK_S_HXT         0x00UL /*!< Setting SysTick clock source as HXT */
 #define CLK_CLKSEL0_STCLK_S_HXT_DIV2    0x10UL /*!< Setting SysTick clock source as HXT/2 */
 #define CLK_CLKSEL0_STCLK_S_HCLK_DIV2   0x18UL /*!< Setting SysTick clock source as HCLK/2 */
-#define CLK_CLKSEL0_STCLK_S_HIRC_DIV2   0x38UL /*!< Setting SysTick clock source as internal HIRC/2 */
+#define CLK_CLKSEL0_STCLK_S_HIRC_DIV2   0x38UL /*!< Setting SysTick clock source as HIRC/2 */
 #define CLK_CLKSEL0_STCLK_S_HCLK        0x04UL /*!< Setting SysTick clock source as HCLK */
 
 
@@ -129,7 +129,11 @@ extern "C"
 #define CLK_PLLCON_NO_2          0x4000UL         /*!< For output divider is 2 */
 #define CLK_PLLCON_NO_4          0xC000UL         /*!< For output divider is 4 */
 
+#if (__HXT == 12000000)
 #define CLK_PLLCON_50MHz_HXT     (CLK_PLLCON_PLL_SRC_HXT  | CLK_PLLCON_NR(3)  | CLK_PLLCON_NF( 25) | CLK_PLLCON_NO_2) /*!< Predefined PLLCON setting for 50MHz PLL output with 12MHz X'tal */
+#else
+# error "The PLL pre-definitions are only valid when external crystal is 12MHz"
+#endif
 #define CLK_PLLCON_50MHz_HIRC    (CLK_PLLCON_PLL_SRC_HIRC | CLK_PLLCON_NR(13) | CLK_PLLCON_NF( 59) | CLK_PLLCON_NO_2) /*!< Predefined PLLCON setting for 50.1918MHz PLL output with 22.1184MHz IRC */
 
 
@@ -289,7 +293,7 @@ __STATIC_INLINE void CLK_SysTickDelay(uint32_t us)
 
 /**
   * @brief      This function execute long delay function.
-  * @param[in]  us  Delay time. 
+  * @param[in]  us  Delay time.
   * @return     None
   * @details    Use the SysTick to generate the long delay time and the UNIT is in us.
   *             The SysTick clock source is from HCLK, i.e the same as system core clock.
@@ -298,7 +302,7 @@ __STATIC_INLINE void CLK_SysTickDelay(uint32_t us)
 __STATIC_INLINE void CLK_SysTickLongDelay(uint32_t us)
 {
     uint32_t delay;
-        
+
     /* It should <= 335544us for each delay loop */
     delay = 335544UL;
 
@@ -312,8 +316,8 @@ __STATIC_INLINE void CLK_SysTickLongDelay(uint32_t us)
         {
             delay = us;
             us = 0UL;
-        }        
-        
+        }
+
         SysTick->LOAD = delay * CyclesPerUs;
         SysTick->VAL  = (0x0UL);
         SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
@@ -323,9 +327,9 @@ __STATIC_INLINE void CLK_SysTickLongDelay(uint32_t us)
 
         /* Disable SysTick counter */
         SysTick->CTRL = 0UL;
-    
+
     }while(us > 0UL);
-    
+
 }
 
 

@@ -15,7 +15,6 @@
 /* Macro, type and constant definitions                                                                    */
 /*---------------------------------------------------------------------------------------------------------*/
 
-#define PLLCON_SETTING      CLK_PLLCON_50MHz_HXT
 #define PLL_CLOCK           50000000
 
 
@@ -70,12 +69,12 @@ void SYS_Init(void)
     CLK_EnableXtalRC(CLK_PWRCON_XTL12M_EN_Msk | CLK_PWRCON_OSC22M_EN_Msk);
 
     /* Enable PLL and Set PLL frequency */
-    CLK_SetCoreClock(PLLCON_SETTING);
+    CLK_SetCoreClock(PLL_CLOCK);
 
     /* Waiting for clock ready */
     CLK_WaitClockReady(CLK_CLKSTATUS_PLL_STB_Msk | CLK_CLKSTATUS_XTL12M_STB_Msk | CLK_CLKSTATUS_OSC22M_STB_Msk);
 
-    /* Switch HCLK clock source to PLL, STCLK to HCLK/2 */
+    /* Switch HCLK clock source to PLL */
     CLK_SetHCLK(CLK_CLKSEL0_HCLK_S_PLL, CLK_CLKDIV_HCLK(2));
 
     /* Enable UART module clock */
@@ -105,7 +104,7 @@ void SYS_Init(void)
     SYS->P3_MFP &= ~(SYS_MFP_P30_Msk | SYS_MFP_P31_Msk);
     SYS->P3_MFP |= (SYS_MFP_P30_RXD | SYS_MFP_P31_TXD);
     /* Set P2 multi-function pins for PWMA Channel0~3 */
-		SYS->P2_MFP &= ~(SYS_MFP_P20_Msk | SYS_MFP_P21_Msk | SYS_MFP_P22_Msk | SYS_MFP_P23_Msk);
+    SYS->P2_MFP &= ~(SYS_MFP_P20_Msk | SYS_MFP_P21_Msk | SYS_MFP_P22_Msk | SYS_MFP_P23_Msk);
     SYS->P2_MFP |= (SYS_MFP_P20_PWM0 | SYS_MFP_P21_PWM1 | SYS_MFP_P22_PWM2 | SYS_MFP_P23_PWM3);
 }
 

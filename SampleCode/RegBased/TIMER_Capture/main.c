@@ -134,14 +134,14 @@ void SYS_Init(void)
     /* User can use SystemCoreClockUpdate() to calculate PllClock, SystemCoreClock and CyclesPerUs automatically. */
     PllClock        = PLL_CLOCK;            // PLL
     SystemCoreClock = PLL_CLOCK / 1;        // HCLK
-    CyclesPerUs     = PLL_CLOCK / 1000000;  // For SYS_SysTickDelay()
+    CyclesPerUs     = PLL_CLOCK / 1000000;  // For CLK_SysTickDelay()
 
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
     /*---------------------------------------------------------------------------------------------------------*/
     /* Set P3 multi-function pins for UART0 RXD, TXD, T0, T1 and T1EX */
     SYS->P3_MFP &= ~(SYS_MFP_P30_Msk | SYS_MFP_P31_Msk | SYS_MFP_P34_Msk | SYS_MFP_P35_Msk | SYS_MFP_P33_Msk);
-		SYS->P3_MFP |= (SYS_MFP_P30_RXD | SYS_MFP_P31_TXD | SYS_MFP_P34_T0 | SYS_MFP_P35_T1 | SYS_MFP_P33_T1EX);
+    SYS->P3_MFP |= (SYS_MFP_P30_RXD | SYS_MFP_P31_TXD | SYS_MFP_P34_T0 | SYS_MFP_P35_T1 | SYS_MFP_P33_T1EX);
     /* Set P1 multi-function pins for T3 */
     SYS->P1_MFP &= ~SYS_MFP_P11_Msk;
     SYS->P1_MFP |= SYS_MFP_P11_T3;

@@ -25,7 +25,7 @@ void IrDA_FunctionRxTest(void);
 
 
 /*---------------------------------------------------------------------------------------------------------*/
-/*  IrDA Function Receive Test                                                                            */
+/*  IrDA Function Receive Test                                                                             */
 /*---------------------------------------------------------------------------------------------------------*/
 void IrDA_FunctionRxTest()
 {
@@ -37,7 +37,7 @@ void IrDA_FunctionRxTest()
     printf("+-------------------------------------------------------------+\n");
     printf("|      ______                                    _______      |\n");
     printf("|     |      |                                  |       |     |\n");
-    printf("|     |Master|--- TXD(P3.1) <====> RXD(P3.0) ---|Slave  |     |\n");
+    printf("|     |Master|--- TXD(P3.1)        RXD(P3.0) ---|Slave  |     |\n");
     printf("|     |      |                                  |       |     |\n");
     printf("|     |______|                                  |_______|     |\n");
     printf("|                                                             |\n");

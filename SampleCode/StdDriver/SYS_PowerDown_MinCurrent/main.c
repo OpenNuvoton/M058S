@@ -248,7 +248,7 @@ int32_t main(void)
     SYS->P3_MFP = SYS_MFP_P31_TXD;
     SYS->P4_MFP = 0;
 
-    /* Configure all GPIO as Quasi-bidirectional Mode. They are default ouput high. */
+    /* Configure all GPIO as Quasi-bidirectional Mode. They are default output high. */
     GPIO_SetMode(P0, GPIO_0_TO_7, GPIO_PMD_QUASI);
     GPIO_SetMode(P1, GPIO_0_TO_7, GPIO_PMD_QUASI);
     GPIO_SetMode(P2, GPIO_0_TO_7, GPIO_PMD_QUASI);

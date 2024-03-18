@@ -119,7 +119,7 @@ extern "C"
  * @brief Set the divider of the selected channel
  * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
-  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
+ * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
  * @param[in] u32Divider Clock divider of specified channel. Valid values are
  *              - \ref PWM_CLK_DIV_1
  *              - \ref PWM_CLK_DIV_2

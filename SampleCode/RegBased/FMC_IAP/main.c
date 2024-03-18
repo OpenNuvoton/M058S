@@ -27,6 +27,8 @@ uint32_t g_u32ImageSize;
 
 uint32_t *g_au32funcTable = (uint32_t *)0x100e00; /* The location of function table */
 
+int32_t g_FMC_i32ErrCode;
+
 void SYS_Init(void)
 {
     int32_t i;
@@ -62,7 +64,7 @@ void SYS_Init(void)
     //SystemCoreClockUpdate();
     PllClock        = PLL_CLOCK;            // PLL
     SystemCoreClock = PLL_CLOCK / 1;        // HCLK
-    CyclesPerUs     = PLL_CLOCK / 1000000;  // For SYS_SysTickDelay()
+    CyclesPerUs     = PLL_CLOCK / 1000000;  // For CLK_SysTickDelay()
 
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
@@ -268,7 +270,7 @@ int32_t main(void)
             printf("Call LDROM function %d fail.\n", i);
         }
     }
- #endif
+#endif
 
 lexit:
 

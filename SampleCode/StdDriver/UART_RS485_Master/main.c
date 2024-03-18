@@ -38,19 +38,29 @@ void RS485_9bitModeMaster(void);
 /*---------------------------------------------------------------------------------------------------------*/
 void RS485_SendAddressByte(uint8_t u8data)
 {
-    /* Set UART parity as MARK and ship baud rate setting */
+    uint32_t u32TimeOutCnt;
+
+    /* Set UART parity as MARK and skip baud rate setting */
     UART_SetLine_Config(UART0, 0, UART_WORD_LEN_8, UART_PARITY_MARK, UART_STOP_BIT_1);
 
     /* Send data */
     UART_WRITE(UART0, u8data);
 
     /* Wait Tx empty */
-    UART_WAIT_TX_EMPTY(UART0);
+    u32TimeOutCnt = SystemCoreClock; /* 1 second time-out */
+    UART_WAIT_TX_EMPTY(UART0)
+    {
+        if(--u32TimeOutCnt == 0)
+        {
+            printf("Wait for UART Tx empty time-out!\n");
+            break;
+        }
+    }
 }
 
 void RS485_SendDataByte(uint8_t *pu8TxBuf, uint32_t u32WriteBytes)
 {
-    /* Set UART parity as SPACE and ship baud rate setting */
+    /* Set UART parity as SPACE and skip baud rate setting */
     UART_SetLine_Config(UART0, 0, UART_WORD_LEN_8, UART_PARITY_SPACE, UART_STOP_BIT_1);
 
     /* Send data */
@@ -71,8 +81,8 @@ void RS485_9bitModeMaster()
     printf("+-------------------------------------------------------------+\n");
     printf("|     _______                                    _______      |\n");
     printf("|    |       |                                  |       |     |\n");
-    printf("|    |Master |--- TXD(P3.1) <====> RXD(P3.0) ---| Slave |     |\n");
-    printf("|    |       |--- RTS(P0.3) <====> RTS(P0.3) ---|       |     |\n");
+    printf("|    |Master |--- TXD(P3.1)        RXD(P3.0) ---| Slave |     |\n");
+    printf("|    |       |--- RTS(P0.3)        RTS(P0.3) ---|       |     |\n");
     printf("|    |_______|                                  |_______|     |\n");
     printf("|                                                             |\n");
     printf("+-------------------------------------------------------------+\n");
@@ -84,29 +94,39 @@ void RS485_9bitModeMaster()
     printf("+-------------------------------------------------------------+\n");
 
     /*
-        The sample code is used to test RS485 9-bit mode and needs
-        two Module test board to complete the test.
+        The sample code is used to test RS485 9-bit mode.
+        It needs two Module test board and enables semihosted to complete the test.
         Master:
             1.Set AUD mode and HW will control RTS pin. LEV_RTS is set to '0'.
             2.Master will send four different address with 10 bytes data to test Slave.
             3.Address bytes : the parity bit should be '1'. (Set UA_LCR = 0x2B)
             4.Data bytes : the parity bit should be '0'. (Set UA_LCR = 0x3B)
-            5.RTS pin is low in idle state. When master is sending,
-              RTS pin will be pull high.
+            5.RTS pin is low in idle state. When master is sending, RTS pin will be pull high.
 
         Slave:
             1.Set AAD and AUD mode firstly. LEV_RTS is set to '0'.
             2.The received byte, parity bit is '1' , is considered "ADDRESS".
             3.The received byte, parity bit is '0' , is considered "DATA".  (Default)
             4.AAD: The slave will ignore any data until ADDRESS match ADDR_MATCH value.
-              When RLS and RDA interrupt is happened,it means the ADDRESS is received.
-              Check if RS485_ADD_DETF is set and read UA_RBR to clear ADDRESS stored in rx_fifo.
+              When RLS and RDA interrupt is happened, it means the ADDRESS is received.
+              Check if RS485_ADD_DETF is set and read UA_RBR to clear ADDRESS stored in RX FIFO.
 
               NMM: The slave will ignore data byte until disable RX_DIS.
               When RLS and RDA interrupt is happened,it means the ADDRESS is received.
               Check the ADDRESS is match or not by user in UART_IRQHandler.
-              If the ADDRESS is match,clear RX_DIS bit to receive data byte.
-              If the ADDRESS is not match,set RX_DIS bit to avoid data byte stored in FIFO.
+              If the ADDRESS is match, clear RX_DIS bit to receive data byte.
+              If the ADDRESS is not match, set RX_DIS bit to avoid data byte stored in FIFO.
+
+        Note: User can measure transmitted data waveform on TXD and RXD pin.
+              RTS pin is used for RS485 transceiver to control transmission direction.
+              RTS pin is low in idle state. When master is sending data, RTS pin will be pull high.
+              The connection to RS485 transceiver is as following figure for reference.
+               __________     ___________      ___________      __________
+              |          |   |           |    |           |    |          |
+              |Master    |   |RS485      |    |RS485      |    |Slave     |
+              | UART_TXD |---|Transceiver|<==>|Transceiver|----| UART_RXD |
+              | UART_nRTS|---|           |    |           |----| UART_nRTS|
+              |__________|   |___________|    |___________|    |__________|
     */
 
     printf("\n");
@@ -122,12 +142,11 @@ void RS485_9bitModeMaster()
 
     /* Set RS485-Master as AUD mode */
     /* Enable AUD mode to HW control RTS pin automatically */
-    /* You also can use GPIO to control RTS pin for replacing AUD mode*/
+    /* You also can use GPIO to control RTS pin for replacing AUD mode */
     UART_SelectRS485Mode(UART0, UART_ALT_CSR_RS485_AUD_Msk, 0);
 
     /* Set RTS pin active level as high level active */
-    UART0->MCR &= ~UART_MCR_LEV_RTS_Msk;
-    UART0->MCR |= UART_RTS_IS_HIGH_LEV_ACTIVE;
+    UART0->MCR = (UART0->MCR & (~UART_MCR_LEV_RTS_Msk)) | UART_RTS_IS_HIGH_LEV_ACTIVE;
 
     /* Set TX delay time */
     UART0->TOR = 0x2000;
