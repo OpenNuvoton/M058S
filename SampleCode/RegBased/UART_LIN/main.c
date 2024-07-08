@@ -5,8 +5,9 @@
  * $Date: 15/07/13 4:13p $
  * @brief    Transmit LIN frame including header and response in UART LIN mode.
  * @note
- * Copyright (C) 2011 Nuvoton Technology Corp. All rights reserved.
+ * @copyright SPDX-License-Identifier: Apache-2.0
  *
+ * @copyright Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
 #include <stdio.h>
 #include "M058S.h"

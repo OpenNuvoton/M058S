@@ -5,8 +5,9 @@
  * $Date: 15/02/06 10:22a $
  * @brief    Capture the PWMA Channel 1 waveform by PWMA Channel 2.
  * @note
- * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
+ * @copyright SPDX-License-Identifier: Apache-2.0
  *
+ * @copyright Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
 #include <stdio.h>
 #include "M058S.h"

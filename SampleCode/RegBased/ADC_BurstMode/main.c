@@ -8,8 +8,9 @@
  *           In burst mode, ADC will sample and convert a specified channel continuously and store the conversion result in FIFO buffers.
  *
  * @note
- * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
+ * @copyright SPDX-License-Identifier: Apache-2.0
  *
+ * @copyright Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
 #include <stdio.h>
 #include "M058S.h"

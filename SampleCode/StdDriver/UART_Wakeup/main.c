@@ -5,8 +5,9 @@
  * $Date: 15/03/10 5:13p $
  * @brief    Show how to wake up system from Power-down mode by UART interrupt.
  * @note
- * Copyright (C) 2011 Nuvoton Technology Corp. All rights reserved.
+ * @copyright SPDX-License-Identifier: Apache-2.0
  *
+ * @copyright Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
 #include <stdio.h>
 #include "M058S.h"
@@ -126,7 +127,7 @@ void SYS_Init(void)
     SYS->P3_MFP |= (SYS_MFP_P30_RXD | SYS_MFP_P31_TXD);
 
     /* Set P0 multi-function pins for UART0 CTS */
-    SYS->P0_MFP = SYS->P0_MFP & (~SYS_MFP_P02_Msk) | SYS_MFP_P02_CTS;
+    SYS->P0_MFP = (SYS->P0_MFP & (~SYS_MFP_P02_Msk)) | SYS_MFP_P02_CTS;
 
 }
 

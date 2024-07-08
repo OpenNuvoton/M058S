@@ -6,7 +6,8 @@
  * @brief    FMC APROM IAP sample for M058S series MCU
  *
  * @note
- * Copyright (C) 2013 Nuvoton Technology Corp. All rights reserved.
+ * @copyright SPDX-License-Identifier: Apache-2.0
+ * @copyright Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
 #include <stdio.h>
 #include "M058S.h"
@@ -143,6 +144,7 @@ int main()
     uint32_t    u32Data;
     char *acBootMode[] = {"LDROM+IAP", "LDROM", "APROM+IAP", "APROM"};
     uint32_t u32CBS;
+    uint32_t u32TimeOutCnt;
 
     /* Unlock protected registers */
     SYS_UnlockReg();
@@ -218,8 +220,11 @@ int main()
                 UART_WAIT_TX_EMPTY(UART0)  /* To make sure all message has been print out */
                     if(--u32TimeOutCnt == 0) break;
 
-                /* Set Boot selection bit for rebooting to LDROM */
-                FMC->ISPCON |= FMC_ISPCON_BS_Msk;
+                /* Mask all interrupt before changing VECMAP to avoid wrong interrupt handler fetched */
+                __set_PRIMASK(1);
+
+                /* Set VECMAP to LDROM for booting from LDROM */
+                FMC_SetVectorPageAddr(FMC_LDROM_BASE);
 
                 /* Software reset to boot to LDROM */
                 NVIC_SystemReset();

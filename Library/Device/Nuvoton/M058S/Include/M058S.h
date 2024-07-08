@@ -6,10 +6,10 @@
  * @brief    M058S Series Peripheral Access Layer Header File
  *
  * @note
- * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved.
+ * @copyright SPDX-License-Identifier: Apache-2.0
  *
+ * @copyright Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
 
 /**
@@ -28,7 +28,7 @@
   *
   * <b>Copyright Notice</b>
   *
-  * Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved.
+  * Copyright (C) 2015~2024 Nuvoton Technology Corp. All rights reserved.
   */
 
 
@@ -5628,7 +5628,6 @@ typedef volatile unsigned short vu16;
 #include "adc.h"
 #endif
 
-/* Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved. */
 
 
 

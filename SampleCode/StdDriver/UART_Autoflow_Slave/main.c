@@ -7,8 +7,9 @@
  *           Transmit and receive data with auto flow control.
  *           This sample code needs to work with UART_Autoflow_Master.
  * @note
- * Copyright (C) 2011 Nuvoton Technology Corp. All rights reserved.
+ * @copyright SPDX-License-Identifier: Apache-2.0
  *
+ * @copyright Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
 #include <stdio.h>
 #include "M058S.h"
@@ -76,7 +77,7 @@ void SYS_Init(void)
     SYS->P3_MFP |= (SYS_MFP_P30_RXD | SYS_MFP_P31_TXD);
 
     /* Set P0 multi-function pins for UART0 RTS */
-    SYS->P0_MFP = SYS->P0_MFP & (~SYS_MFP_P03_Msk) | SYS_MFP_P03_RTS;
+    SYS->P0_MFP = (SYS->P0_MFP & (~SYS_MFP_P03_Msk)) | SYS_MFP_P03_RTS;
 
 }
 

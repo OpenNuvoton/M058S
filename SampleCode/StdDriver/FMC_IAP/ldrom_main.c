@@ -6,7 +6,8 @@
  * @brief    FMC LDROM IAP sample program for MINI51 series MCU
  *
  * @note
- * Copyright (C) 2013 Nuvoton Technology Corp. All rights reserved.
+ * @copyright SPDX-License-Identifier: Apache-2.0
+ * @copyright Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
 #include <stdio.h>
 #include "M058S.h"
@@ -15,6 +16,8 @@
 
 #define PLLCON_SETTING      CLK_PLLCON_50MHz_HXT
 #define PLL_CLOCK           50000000
+
+void ProcessHardFault(void){}
 
 void SYS_Init(void)
 {
@@ -108,6 +111,8 @@ static void PutString(char *str)
 
 int main()
 {
+    uint32_t u32TimeOutCnt;
+
     /* Unlock protected register */
     SYS_UnlockReg();
 
@@ -128,8 +133,14 @@ int main()
     UART_WAIT_TX_EMPTY(UART0)
         if(--u32TimeOutCnt == 0) break;
 
-    /* Set Boot selection bit for rebooting to APROM */
-    FMC->ISPCON &= ~FMC_ISPCON_BS_Msk;
+    /* Mask all interrupt before changing VECMAP to avoid wrong interrupt handler fetched */
+    __set_PRIMASK(1);
+
+    /* Change VECMAP for booting to APROM */
+    FMC_SetVectorPageAddr(FMC_APROM_BASE);
+
+    /* Lock protected Register */
+    SYS_LockReg();
 
     /* Software reset to boot to APROM */
     NVIC_SystemReset();
