@@ -54,6 +54,7 @@ void PWMA_IRQHandler(void)
 
 void SYS_Init(void)
 {
+	uint32_t u32TimeOutCnt;
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init System Clock                                                                                       */
     /*---------------------------------------------------------------------------------------------------------*/
@@ -62,7 +63,9 @@ void SYS_Init(void)
     CLK->PWRCON |= CLK_PWRCON_OSC22M_EN_Msk;
 
     /* Waiting for IRC22M clock ready */
-    while(!(CLK->CLKSTATUS & CLK_CLKSTATUS_OSC22M_STB_Msk));
+    u32TimeOutCnt = __HIRC;
+	while(!(CLK->CLKSTATUS & CLK_CLKSTATUS_OSC22M_STB_Msk))
+		if(--u32TimeOutCnt == 0) break;
 
     /* Switch HCLK clock source to Internal RC and HCLK source divide 1 */
     CLK->CLKSEL0 &= ~CLK_CLKSEL0_HCLK_S_Msk;
@@ -106,7 +109,7 @@ void SYS_Init(void)
     /* Set P3 multi-function pins for UART RXD and TXD  */
     SYS->P3_MFP &= ~(SYS_MFP_P30_Msk | SYS_MFP_P31_Msk);
     SYS->P3_MFP |= (SYS_MFP_P30_RXD | SYS_MFP_P31_TXD);
-    
+
     /* Set P2 multi-function pins for PWMA Channel0~3 */
     SYS->P2_MFP &= ~(SYS_MFP_P20_Msk | SYS_MFP_P21_Msk | SYS_MFP_P22_Msk | SYS_MFP_P23_Msk);
     SYS->P2_MFP |= (SYS_MFP_P20_PWM0 | SYS_MFP_P21_PWM1 | SYS_MFP_P22_PWM2 | SYS_MFP_P23_PWM3);
@@ -237,7 +240,3 @@ int32_t main(void)
     while(1);
 
 }
-
-
-
-

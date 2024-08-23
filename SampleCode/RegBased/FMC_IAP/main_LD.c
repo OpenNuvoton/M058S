@@ -62,6 +62,7 @@ void SysTickDelay(uint32_t us)
 
 void SYS_Init(void)
 {
+	uint32_t u32TimeOutCnt;
     int32_t i;
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init System Clock                                                                                       */
@@ -197,12 +198,12 @@ int32_t main(void)
 
     /* Unlock protected registers for ISP function */
     SYS_UnlockReg();
-    
+
     /* Init System, IP clock and multi-function I/O */
     SYS_Init();
 
 #if defined(__GNUC_LD_IAP__)
-        
+
     // Delay 3 seconds
     for(i = 0; i < 30; i++)
     {
@@ -211,7 +212,7 @@ int32_t main(void)
 
     while(SYS->PDID)__WFI();
 #else
-    
+
     /* Init UART0 for printf */
     UART0_Init();
 
@@ -238,9 +239,5 @@ int32_t main(void)
     printf("Function table @ 0x%08x\n",(uint32_t)g_funcTable);
 
     while(SYS->PDID)__WFI();
-#endif    
+#endif
 }
-
-
-
-
