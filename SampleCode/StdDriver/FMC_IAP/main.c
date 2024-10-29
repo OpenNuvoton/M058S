@@ -76,6 +76,9 @@ void UART0_Init(void)
     UART_Open(UART0, 115200);
 }
 
+#if defined ( __ICCARM__ )
+#pragma optimize=low
+#endif
 
 void FMC_LDROM_Test(void)
 {
